@@ -54,4 +54,3 @@ I pushed 100days on X and ran a small ad campaign, but it didn’t gain much tra
 
 ![Github commits](github.png)
 
-[Source code](https://github.com/neilspink/100days-site) is available on Github.
