@@ -20,7 +20,7 @@ That’s it. No feeds. No distractions. Just you versus the next 100 days.
 
 The idea comes from watching the video [I Worked Out Like David Goggins for 100 Days](https://youtu.be/vWU5O7cK7aI?si=Qvuerw0Zx3Y68PMf). Both entertaining and showing what happens when you truely commit to goal. Momentum compounds when you consistenly deliver. It lit the spark for my own 100-day project but instead of doing fitness, I wanted to program again and why not build a commitment engine that backs you on such a venture. Something that turns promises into action and accountability into a game you can actually win.
 
-I wanted massive scaling capacity and chose Firebase. Their NoSQL backend which provides granual access control and easy auth. I eventually extended with Firebase Storage for images, because words aren’t always enough. On top of that I run a free cron-job.org task to push daily reminders with short coaching notes to your mailbox and a weekly digest newsletter. To make it dynamic, the AI coach changes tone: if you skip check-ins, the temperature parameter gets dialed up, making the responses a little sharper, a little more urgent. The app is minimal on purpose, a fun MVP. 
+I wanted massive scaling capacity and chose Firebase. Their NoSQL backend provides granual access control and easy auth. I eventually extended with Firebase Storage for images, because words aren’t always enough. On top of that I run a free cron-job.org task to push daily reminders with short coaching notes to your mailbox and a weekly digest newsletter. To make it dynamic, the AI coach changes tone: if you skip check-ins, the temperature parameter gets dialed up, making the responses a little sharper, a little more urgent. The app is minimal on purpose, a fun MVP. 
 
 I didn’t expect login and then email to be the hardest parts of the 100days.ink project. If registration emails land in the spam folder, your app is dead before it starts. 
 
@@ -36,9 +36,9 @@ You get what you pay for. And this one-size-fits-all backend forced me to jam Fi
 
 The Firestore database I found very practical. 
 
-![Firestore database](firebase-users.png)
+![Firestore database](firebase-database-entry.png)
 
-I love building in Next.js with TypeScript. The API routes, file-based routing, server + client all in one was a good first experience. I’ve worked with Angular before and completed a project in Ember.js, but moving into the React ecosystem was a great. 
+I liked building in Next.js with TypeScript. The API routes, file-based routing, server + client all in one was a good first experience. I’ve worked with Angular before and completed a project in Ember.js, but moving into the React ecosystem was a great. 
 
 Making it mobile friendly was important to me. You get a link every day to reflect on your 100 day mission. 
 
