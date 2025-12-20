@@ -38,3 +38,8 @@ theme = 'hermit-v2'
     name = "About"
     url = "https://www.linkedin.com/in/neilspink/"
     weight = 20
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

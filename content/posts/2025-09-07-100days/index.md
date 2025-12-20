@@ -42,9 +42,11 @@ I liked building in Next.js with TypeScript. The API routes, file-based routing,
 
 Making it mobile friendly was important to me. You get a link every day to reflect on your 100 day mission. 
 
-<img src="UI-day1.jpg" alt="Day 1 reflection" width="275px" />
+<img src="UI-day1.jpg" alt="Day 1 reflection" width="375" />
 
 Every day, the system runs a user’s most recent reflections through OpenAI, combining their goal, coaching style, and behavioral patterns to generate personalized advice and an email subject line in their coach’s voice. It tags each reflection with a “vibe” like grit or desperation, adjusts the tone dynamically based on past engagement, trying to keep users moving forward—even if it has to jolt them.
+
+![Example emails](emails.png)
 
 I was worried OpenAI usage might blow up my budget, so I limited output length and kept prompts tight. But it turns out, even with daily usage across multiple users, the cost has been laughably low.
 
@@ -53,4 +55,135 @@ I was worried OpenAI usage might blow up my budget, so I limited output length a
 I pushed 100days on X and ran a small ad campaign, but it didn’t gain much traction. In September I stared building the social features, but ultimately decided to wrap the project.
 
 ![Github commits](github.png)
+
+There were several cool parts of the project:
+
+**Motivational styles of the AI**
+
+* Data-driven coach definitions: [data/architypes.json](https://github.com/neilspink/100days-site/blob/main/data/architypes.json)
+* Behavioral constraints: [data/guardrails.json](https://github.com/neilspink/100days-site/blob/main/data/guardrails.json)
+* Used by the coaching pipeline: [app/api/coaching/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/coaching/route.ts)
+
+**AI coaching pipeline**
+
+* [app/api/coaching/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/coaching/route.ts) (OpenAI Responses API + Firestore reads/writes + cron header guard)
+* Job runners: [scripts/runCoaching.js](https://github.com/neilspink/100days-site/blob/main/scripts/runCoaching.js), [scripts/executeCoaching.js](https://github.com/neilspink/100days-site/blob/main/scripts/executeCoaching.js)
+
+**Single-use / time-limited “mission day” links (JWT)**
+
+* Link generator: [lib/generateLink.ts](https://github.com/neilspink/100days-site/blob/main/lib/generateLink.ts)
+* API wrapper: [app/api/generate-link/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/generate-link/route.ts)
+* Consumed by daily pushes: [app/api/push-daily/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/push-daily/route.ts)
+* The mission day page: [app/mission/day/[id]/page.tsx](https://github.com/neilspink/100days-site/blob/main/app/mission/day/%5Bid%5D/page.tsx)
+
+**Reflection system with image upload**
+
+* Reflection API: [app/api/reflect/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/reflect/route.ts) (multipart parsing, uploads, conditional reuse of existing image)
+* UI list: [app/components/ReflectionList.tsx](https://github.com/neilspink/100days-site/blob/main/app/components/ReflectionList.tsx)
+* Active user + signed image URLs: [lib/mission.ts](https://github.com/neilspink/100days-site/blob/main/lib/mission.ts)
+
+**Automated email engine using Markdown templates**
+
+* Template loader + subject parsing: [lib/email-template.ts](https://github.com/neilspink/100days-site/blob/main/lib/email-template.ts)
+* Weekly templates: [lib/emails/](https://github.com/neilspink/100days-site/tree/main/lib/emails)
+* Sending flows: [app/api/push-daily/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/push-daily/route.ts) and [app/api/commitment/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/commitment/route.ts)
+
+**Daily workflow orchestrator (“push-daily”)**
+
+* Orchestrator: [app/api/push-daily/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/push-daily/route.ts)
+
+**Monetization path: Stripe “tip” checkout**
+
+* Tip endpoint: [app/api/tip/route.ts](https://github.com/neilspink/100days-site/blob/main/app/api/tip/route.ts)
+* Support page: [app/support/page.tsx](https://github.com/neilspink/100days-site/blob/main/app/support/page.tsx)
+
+![Support page](support.png)
+
+**Image uploads feature**
+
+I assumed image uploads would be a quick win: accept a photo, store it, show it back in the reflection timeline. On the UX side, I didn’t want “upload failed” to be a dead end. If the upload fails due to size, the user gets a direct link to compress the image and try again (e.g. Squoosh: https://squoosh.app/). 
+
+The core trick in providing this feature was adapting `NextRequest` for multipart parsing + safe failure UX
+
+```ts
+import { NextRequest, NextResponse } from "next/server";
+import multer from "multer";
+import { Readable } from "stream";
+
+const MAX_BYTES = 200 * 1024; // 200 KB
+const COMPRESS_LINK = "https://squoosh.app/";
+
+// Multer in-memory upload with hard limits + mime filtering
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: MAX_BYTES },
+  fileFilter: (_req, file, cb) => {
+    if (!file.mimetype.startsWith("image/")) {
+      return cb(new Error("Only image uploads are allowed."));
+    }
+    cb(null, true);
+  },
+});
+
+// Promise wrapper for classic Node middleware
+function runMiddleware(req: any, res: any, fn: any) {
+  return new Promise<void>((resolve, reject) => {
+    fn(req, res, (result: any) => (result instanceof Error ? reject(result) : resolve()));
+  });
+}
+
+// Adapt NextRequest -> Node Readable so multer can parse multipart/form-data
+function toNodeReadable(req: NextRequest) {
+  const nodeReq: any = new Readable({ read() {} });
+  nodeReq.headers = Object.fromEntries(req.headers.entries());
+  nodeReq.method = req.method;
+  nodeReq.url = req.url;
+  return nodeReq;
+}
+
+function isMulterFileTooLarge(err: unknown) {
+  // Multer uses code === "LIMIT_FILE_SIZE" for size issues
+  return typeof err === "object" && err !== null && (err as any).code === "LIMIT_FILE_SIZE";
+}
+
+export async function POST(req: NextRequest) {
+  const nodeReq = toNodeReadable(req);
+  const nodeRes = { end() {}, setHeader() {}, getHeader() {} };
+
+  // Push the full body into the Readable stream for multer to consume
+  const body = Buffer.from(await req.arrayBuffer());
+  nodeReq.push(body);
+  nodeReq.push(null);
+
+  try {
+    await runMiddleware(nodeReq, nodeRes, upload.single("image"));
+  } catch (err) {
+    // Defensive programming: clear, actionable error for the user
+    if (isMulterFileTooLarge(err)) {
+      return NextResponse.json(
+        {
+          error: `Image is too large (max ${MAX_BYTES / 1024}KB).`,
+          help: "Compress your image and try again:",
+          link: COMPRESS_LINK,
+        },
+        { status: 413 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Upload failed. Please try a different image." },
+      { status: 400 }
+    );
+  }
+
+  const fields = nodeReq.body ?? {};
+  const file = nodeReq.file; // { originalname, mimetype, buffer, size, ... }
+
+  if (!fields.reflection || !fields.answer || !fields.day) {
+    return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
+  }
+
+  // ...continue with auth checks, validation, storage upload, and DB write...
+  return NextResponse.json({ ok: true });
+}
 
