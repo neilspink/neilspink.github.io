@@ -21,7 +21,7 @@ help people commit to something for 100 days and actually follow through.</p>
 <p><img src="firebase-database-entry.png" alt="Firestore database"></p>
 <p>I liked building in Next.js with TypeScript. The API routes, file-based routing, server + client all in one was a good first experience. I’ve worked with Angular before and completed a project in Ember.js, but moving into the React ecosystem was a great.</p>
 <p>Making it mobile friendly was important to me. You get a link every day to reflect on your 100 day mission.</p>
-<p><img src="UI-day1.jpg" alt="Day 1 reflection"></p>
+<!-- raw HTML omitted -->
 <p>Every day, the system runs a user’s most recent reflections through OpenAI, combining their goal, coaching style, and behavioral patterns to generate personalized advice and an email subject line in their coach’s voice. It tags each reflection with a “vibe” like grit or desperation, adjusts the tone dynamically based on past engagement, trying to keep users moving forward—even if it has to jolt them.</p>
 <p>I was worried OpenAI usage might blow up my budget, so I limited output length and kept prompts tight. But it turns out, even with daily usage across multiple users, the cost has been laughably low.</p>
 <p><img src="openai.png" alt="OpenAI costs"></p>
