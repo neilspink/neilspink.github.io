@@ -21,13 +21,138 @@ help people commit to something for 100 days and actually follow through.</p>
 <p><img src="firebase-database-entry.png" alt="Firestore database"></p>
 <p>I liked building in Next.js with TypeScript. The API routes, file-based routing, server + client all in one was a good first experience. I’ve worked with Angular before and completed a project in Ember.js, but moving into the React ecosystem was a great.</p>
 <p>Making it mobile friendly was important to me. You get a link every day to reflect on your 100 day mission.</p>
-<!-- raw HTML omitted -->
+<img src="UI-day1.jpg" alt="Day 1 reflection" width="375" />
 <p>Every day, the system runs a user’s most recent reflections through OpenAI, combining their goal, coaching style, and behavioral patterns to generate personalized advice and an email subject line in their coach’s voice. It tags each reflection with a “vibe” like grit or desperation, adjusts the tone dynamically based on past engagement, trying to keep users moving forward—even if it has to jolt them.</p>
+<p><img src="emails.png" alt="Example emails"></p>
 <p>I was worried OpenAI usage might blow up my budget, so I limited output length and kept prompts tight. But it turns out, even with daily usage across multiple users, the cost has been laughably low.</p>
 <p><img src="openai.png" alt="OpenAI costs"></p>
 <p>I pushed 100days on X and ran a small ad campaign, but it didn’t gain much traction. In September I stared building the social features, but ultimately decided to wrap the project.</p>
 <p><img src="github.png" alt="Github commits"></p>
-]]></content></item><item><title>AheadFork: Exploring Forks Ahead of Upstream (Python)</title><link>https://neilspink.ch/posts/2020-11-27-aheadfork/</link><pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2020-11-27-aheadfork/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<p>I wrote <strong>AheadFork</strong>, a small Python tool that helps explore GitHub forks that are ahead of their upstream repository—where contributors have built new code on top of existing projects. Using the GitHub REST API, it checks each fork of a given repo, compares its <code>master</code> branch against upstream, and reports how many commits it is ahead or behind, along with stars and last push date. This makes it easy to spot active forks that may contain interesting features, bug fixes, or experiments worth tracking. AheadFork is simple to run with Python 3 and <code>requests</code>, and it’s released on GitHub for anyone curious about how projects evolve through their forks.</p>
+<p>There were several cool parts of the project:</p>
+<p><strong>Motivational styles of the AI</strong></p>
+<ul>
+<li>Data-driven coach definitions: <a href="https://github.com/neilspink/100days-site/blob/main/data/architypes.json">data/architypes.json</a></li>
+<li>Behavioral constraints: <a href="https://github.com/neilspink/100days-site/blob/main/data/guardrails.json">data/guardrails.json</a></li>
+<li>Used by the coaching pipeline: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/coaching/route.ts">app/api/coaching/route.ts</a></li>
+</ul>
+<p><strong>AI coaching pipeline</strong></p>
+<ul>
+<li><a href="https://github.com/neilspink/100days-site/blob/main/app/api/coaching/route.ts">app/api/coaching/route.ts</a> (OpenAI Responses API + Firestore reads/writes + cron header guard)</li>
+<li>Job runners: <a href="https://github.com/neilspink/100days-site/blob/main/scripts/runCoaching.js">scripts/runCoaching.js</a>, <a href="https://github.com/neilspink/100days-site/blob/main/scripts/executeCoaching.js">scripts/executeCoaching.js</a></li>
+</ul>
+<p><strong>Single-use / time-limited “mission day” links (JWT)</strong></p>
+<ul>
+<li>Link generator: <a href="https://github.com/neilspink/100days-site/blob/main/lib/generateLink.ts">lib/generateLink.ts</a></li>
+<li>API wrapper: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/generate-link/route.ts">app/api/generate-link/route.ts</a></li>
+<li>Consumed by daily pushes: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/push-daily/route.ts">app/api/push-daily/route.ts</a></li>
+<li>The mission day page: <a href="https://github.com/neilspink/100days-site/blob/main/app/mission/day/%5Bid%5D/page.tsx">app/mission/day/[id]/page.tsx</a></li>
+</ul>
+<p><strong>Reflection system with image upload</strong></p>
+<ul>
+<li>Reflection API: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/reflect/route.ts">app/api/reflect/route.ts</a> (multipart parsing, uploads, conditional reuse of existing image)</li>
+<li>UI list: <a href="https://github.com/neilspink/100days-site/blob/main/app/components/ReflectionList.tsx">app/components/ReflectionList.tsx</a></li>
+<li>Active user + signed image URLs: <a href="https://github.com/neilspink/100days-site/blob/main/lib/mission.ts">lib/mission.ts</a></li>
+</ul>
+<p><strong>Automated email engine using Markdown templates</strong></p>
+<ul>
+<li>Template loader + subject parsing: <a href="https://github.com/neilspink/100days-site/blob/main/lib/email-template.ts">lib/email-template.ts</a></li>
+<li>Weekly templates: <a href="https://github.com/neilspink/100days-site/tree/main/lib/emails">lib/emails/</a></li>
+<li>Sending flows: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/push-daily/route.ts">app/api/push-daily/route.ts</a> and <a href="https://github.com/neilspink/100days-site/blob/main/app/api/commitment/route.ts">app/api/commitment/route.ts</a></li>
+</ul>
+<p><strong>Daily workflow orchestrator (“push-daily”)</strong></p>
+<ul>
+<li>Orchestrator: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/push-daily/route.ts">app/api/push-daily/route.ts</a></li>
+</ul>
+<p><strong>Monetization path: Stripe “tip” checkout</strong></p>
+<ul>
+<li>Tip endpoint: <a href="https://github.com/neilspink/100days-site/blob/main/app/api/tip/route.ts">app/api/tip/route.ts</a></li>
+<li>Support page: <a href="https://github.com/neilspink/100days-site/blob/main/app/support/page.tsx">app/support/page.tsx</a></li>
+</ul>
+<p><img src="support.png" alt="Support page"></p>
+<p><strong>Image uploads feature</strong></p>
+<p>I assumed image uploads would be a quick win: accept a photo, store it, show it back in the reflection timeline. On the UX side, I didn’t want “upload failed” to be a dead end. If the upload fails due to size, the user gets a direct link to compress the image and try again (e.g. Squoosh: <a href="https://squoosh.app/)">https://squoosh.app/)</a>.</p>
+<p>The core trick in providing this feature was adapting <code>NextRequest</code> for multipart parsing + safe failure UX</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ts" data-lang="ts"><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">NextRequest</span>, <span style="color:#a6e22e">NextResponse</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;next/server&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> <span style="color:#a6e22e">multer</span> <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;multer&#34;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">Readable</span> } <span style="color:#66d9ef">from</span> <span style="color:#e6db74">&#34;stream&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">MAX_BYTES</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">200</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">1024</span>; <span style="color:#75715e">// 200 KB
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">COMPRESS_LINK</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://squoosh.app/&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Multer in-memory upload with hard limits + mime filtering
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">upload</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">multer</span>({
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">storage</span>: <span style="color:#66d9ef">multer.memoryStorage</span>(),
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">limits</span><span style="color:#f92672">:</span> { <span style="color:#a6e22e">fileSize</span>: <span style="color:#66d9ef">MAX_BYTES</span> },
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fileFilter</span><span style="color:#f92672">:</span> (<span style="color:#a6e22e">_req</span>, <span style="color:#a6e22e">file</span>, <span style="color:#a6e22e">cb</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">file</span>.<span style="color:#a6e22e">mimetype</span>.<span style="color:#a6e22e">startsWith</span>(<span style="color:#e6db74">&#34;image/&#34;</span>)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">cb</span>(<span style="color:#66d9ef">new</span> Error(<span style="color:#e6db74">&#34;Only image uploads are allowed.&#34;</span>));
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">cb</span>(<span style="color:#66d9ef">null</span>, <span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>  },
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Promise wrapper for classic Node middleware
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">runMiddleware</span>(<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">any</span>, <span style="color:#a6e22e">res</span>: <span style="color:#66d9ef">any</span>, <span style="color:#a6e22e">fn</span>: <span style="color:#66d9ef">any</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Promise</span>&lt;<span style="color:#f92672">void</span>&gt;((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fn</span>(<span style="color:#a6e22e">req</span>, <span style="color:#a6e22e">res</span>, (<span style="color:#a6e22e">result</span>: <span style="color:#66d9ef">any</span>) <span style="color:#f92672">=&gt;</span> (<span style="color:#a6e22e">result</span> <span style="color:#66d9ef">instanceof</span> Error <span style="color:#f92672">?</span> <span style="color:#a6e22e">reject</span>(<span style="color:#a6e22e">result</span>) <span style="color:#f92672">:</span> <span style="color:#a6e22e">resolve</span>()));
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Adapt NextRequest -&gt; Node Readable so multer can parse multipart/form-data
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">toNodeReadable</span>(<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">NextRequest</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nodeReq</span>: <span style="color:#66d9ef">any</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Readable</span>({ <span style="color:#a6e22e">read() {</span>} });
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">headers</span> <span style="color:#f92672">=</span> Object.<span style="color:#a6e22e">fromEntries</span>(<span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">headers</span>.<span style="color:#a6e22e">entries</span>());
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">method</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">method</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">url</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">nodeReq</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">isMulterFileTooLarge</span>(<span style="color:#a6e22e">err</span>: <span style="color:#66d9ef">unknown</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Multer uses code === &#34;LIMIT_FILE_SIZE&#34; for size issues
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">typeof</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;object&#34;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">as</span> <span style="color:#66d9ef">any</span>).<span style="color:#a6e22e">code</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#34;LIMIT_FILE_SIZE&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">POST</span>(<span style="color:#a6e22e">req</span>: <span style="color:#66d9ef">NextRequest</span>) {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nodeReq</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">toNodeReadable</span>(<span style="color:#a6e22e">req</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">nodeRes</span> <span style="color:#f92672">=</span> { <span style="color:#a6e22e">end() {</span>}, <span style="color:#a6e22e">setHeader() {</span>}, <span style="color:#a6e22e">getHeader() {</span>} };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Push the full body into the Readable stream for multer to consume
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">body</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">Buffer</span>.<span style="color:#66d9ef">from</span>(<span style="color:#66d9ef">await</span> <span style="color:#a6e22e">req</span>.<span style="color:#a6e22e">arrayBuffer</span>());
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">push</span>(<span style="color:#a6e22e">body</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">push</span>(<span style="color:#66d9ef">null</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">runMiddleware</span>(<span style="color:#a6e22e">nodeReq</span>, <span style="color:#a6e22e">nodeRes</span>, <span style="color:#a6e22e">upload</span>.<span style="color:#a6e22e">single</span>(<span style="color:#e6db74">&#34;image&#34;</span>));
+</span></span><span style="display:flex;"><span>  } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">err</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Defensive programming: clear, actionable error for the user
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">isMulterFileTooLarge</span>(<span style="color:#a6e22e">err</span>)) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NextResponse</span>.<span style="color:#a6e22e">json</span>(
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`Image is too large (max </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">MAX_BYTES</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1024</span><span style="color:#e6db74">}</span><span style="color:#e6db74">KB).`</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">help</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Compress your image and try again:&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">link</span>: <span style="color:#66d9ef">COMPRESS_LINK</span>,
+</span></span><span style="display:flex;"><span>        },
+</span></span><span style="display:flex;"><span>        { <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">413</span> }
+</span></span><span style="display:flex;"><span>      );
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NextResponse</span>.<span style="color:#a6e22e">json</span>(
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Upload failed. Please try a different image.&#34;</span> },
+</span></span><span style="display:flex;"><span>      { <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">400</span> }
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fields</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">body</span> <span style="color:#f92672">??</span> {};
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">file</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">nodeReq</span>.<span style="color:#a6e22e">file</span>; <span style="color:#75715e">// { originalname, mimetype, buffer, size, ... }
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">fields</span>.<span style="color:#a6e22e">reflection</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">fields</span>.<span style="color:#a6e22e">answer</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span><span style="color:#a6e22e">fields</span>.<span style="color:#a6e22e">day</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NextResponse</span>.<span style="color:#a6e22e">json</span>({ <span style="color:#a6e22e">error</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;Missing required fields.&#34;</span> }, { <span style="color:#a6e22e">status</span>: <span style="color:#66d9ef">400</span> });
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// ...continue with auth checks, validation, storage upload, and DB write...
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">NextResponse</span>.<span style="color:#a6e22e">json</span>({ <span style="color:#a6e22e">ok</span>: <span style="color:#66d9ef">true</span> });
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>]]></content></item><item><title>AheadFork: Exploring Forks Ahead of Upstream (Python)</title><link>https://neilspink.ch/posts/2020-11-27-aheadfork/</link><pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2020-11-27-aheadfork/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<p>I wrote <strong>AheadFork</strong>, a small Python tool that helps explore GitHub forks that are ahead of their upstream repository—where contributors have built new code on top of existing projects. Using the GitHub REST API, it checks each fork of a given repo, compares its <code>master</code> branch against upstream, and reports how many commits it is ahead or behind, along with stars and last push date. This makes it easy to spot active forks that may contain interesting features, bug fixes, or experiments worth tracking. AheadFork is simple to run with Python 3 and <code>requests</code>, and it’s released on GitHub for anyone curious about how projects evolve through their forks.</p>
 <p>Check out the <a href="https://github.com/neilspink/aheadfork">source on GitHub</a> and try it out on your favorite repos.</p>
 ]]></content></item><item><title>Recaptures: a one‑minute screen capture journal (C#)</title><link>https://neilspink.ch/posts/2020-05-14-recaptures/</link><pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2020-05-14-recaptures/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<h2 id="why-i-built-it">Why I built it<a href="#why-i-built-it" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
       stroke-linecap="round" stroke-linejoin="round">
