@@ -42,7 +42,7 @@ I liked building in Next.js with TypeScript. The API routes, file-based routing,
 
 Making it mobile friendly was important to me. You get a link every day to reflect on your 100 day mission. 
 
-![Day 1 reflection](UI-day1.jpg)
+<img src="UI-day1.jpg" alt="Day 1 reflection" width="375" />
 
 Every day, the system runs a user’s most recent reflections through OpenAI, combining their goal, coaching style, and behavioral patterns to generate personalized advice and an email subject line in their coach’s voice. It tags each reflection with a “vibe” like grit or desperation, adjusts the tone dynamically based on past engagement, trying to keep users moving forward—even if it has to jolt them.
 
