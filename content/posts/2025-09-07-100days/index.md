@@ -1,3 +1,9 @@
+---
+title: "100days.ink — A Commitment Engine"
+date: 2025-09-07
+tags: ["100days", "commitment", "focus", "execution"]
+---
+
 I’ve been building [100days.ink](https://100days.ink), a small app with a big purpose:
 help people commit to something for 100 days and actually follow through.
 
