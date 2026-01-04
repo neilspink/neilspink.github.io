@@ -64,7 +64,7 @@ In September I started building social features, but ultimately decided to wrap 
 
 ![Github commits](github.png)
 
-There were several cool parts of the project (technical):
+There were several cool parts of the project:
 
 - AI coaching personalities (data-driven archetypes + guardrails)
 - A daily coaching pipeline built on reflections + goal context
