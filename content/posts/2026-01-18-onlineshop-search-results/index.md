@@ -4,7 +4,7 @@ date: 2026-01-18
 tags: ["ecommerce", "conversion", "digitalexecution"]
 ---
 
-Recently, I went looking for a USB-C monitor. I typed exactly that into the onlineshop of the nearest electronics store getting nothing relevant back. Confused, I ran the same search on four more major Swiss retailers. One showed only cables. Two didn’t list any monitors. One buried the relevant products under five unrelated results. Only one got it right.
+Recently, I went looking for a USB-C monitor. I typed "usb c monitor" into the onlineshop of the nearest electronics store getting nothing relevant back. Confused, I ran the same search on four more major Swiss retailers. One showed only cables. Two didn’t list any monitors. One buried the relevant products under five unrelated results. Only one got it right.
 
 Maybe “Bildschirm” was the better term? Tried that. No improvement.
 
