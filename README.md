@@ -10,3 +10,10 @@ This repo is a sandbox for learning [Hugo](https://gohugo.io/) — a lightning-f
 ```bash
 git clone https://github.com/neilspink/blog.git
 cd blog
+```
+
+## Running Locally
+
+```bash
+hugo server
+```
