@@ -4,9 +4,9 @@ date: 202-01-18
 tags: ["100days", "commitment", "focus", "execution"]
 ---
 
-Recently, I went looking for a USB-C monitor. I typed exactly that into the onlineshop of the nearest electronics store getting nothing relevant back. Confused, I ran the same search on four more major Swiss retailers. One showed only cables. Two didn’t list any monitors. One buried the relevant products under five unrelated results. Only one got it right!?!
+Recently, I went looking for a USB-C monitor. I typed exactly that into the onlineshop of the nearest electronics store getting nothing relevant back. Confused, I ran the same search on four more major Swiss retailers. One showed only cables. Two didn’t list any monitors. One buried the relevant products under five unrelated results. Only one got it right.
 
-Maybe the better keyword is bildschirm not monitor. It changed nothing.
+Maybe “Bildschirm” was the better term? Tried that. No improvement.
 
 <img src="search-results.png" alt="Example products returned" width="2275" />
 
@@ -19,5 +19,4 @@ Most retailers already sit on gold: behavioral data, product metadata, competito
 - Run monthly and seasonal audits of top search terms vs conversion
 - Benchmark competitors’ search accuracy quarterly
 
-High intent starts with the search bar. If yours isn’t converting, don’t blame traffic—fix the engine.
-
+Your onlineshop is only as good as search bar. If yours isn’t converting, don’t blame traffic.
