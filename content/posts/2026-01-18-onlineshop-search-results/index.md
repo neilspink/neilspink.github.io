@@ -1,5 +1,5 @@
 ---
-title: "Why Your Online Shop Isn’t Selling (And What I’d Do If I Were CEO)"
+title: "Your Online Shop Is Only as Good as Its Search Bar"
 date: 2026-01-18
 tags: ["ecommerce", "conversion", "digitalexecution"]
 ---
