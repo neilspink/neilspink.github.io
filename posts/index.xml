@@ -1,4 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Posts on Neil Spink</title><link>https://neilspink.ch/posts/</link><description>Recent content in Posts on Neil Spink</description><generator>Hugo -- 0.118.2</generator><language>en-us</language><lastBuildDate>Sun, 07 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://neilspink.ch/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>100days.ink — A Commitment Engine</title><link>https://neilspink.ch/posts/2025-09-07-100days/</link><pubDate>Sun, 07 Sep 2025 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2025-09-07-100days/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<p>I’ve been building <a href="https://100days.ink">100days.ink</a>, a small app with a big purpose:
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/"><channel><title>Posts on Neil Spink</title><link>https://neilspink.ch/posts/</link><description>Recent content in Posts on Neil Spink</description><generator>Hugo -- 0.118.2</generator><language>en-us</language><lastBuildDate>Sun, 18 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://neilspink.ch/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Why Your Online Shop Isn’t Selling (And What I’d Do If I Were CEO)</title><link>https://neilspink.ch/posts/2026-01-18-onlineshop-search-results/</link><pubDate>Sun, 18 Jan 2026 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2026-01-18-onlineshop-search-results/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<p>Recently, I went looking for a USB-C monitor. I typed exactly that into the onlineshop of the nearest electronics store getting nothing relevant back. Confused, I ran the same search on four more major Swiss retailers. One showed only cables. Two didn’t list any monitors. One buried the relevant products under five unrelated results. Only one got it right.</p>
+<p>Maybe “Bildschirm” was the better term? Tried that. No improvement.</p>
+<img src="search-results.png" alt="Example products returned" width="275" />
+<p>Your search engine is your sales team. If it can’t understand intent, it can’t convert. And if your customer has to work to find what they need, they’re gone.</p>
+<p>Most retailers already sit on gold: behavioral data, product metadata, competitor benchmarks. But few close the loop. I’d challenge any digital retailer with this:</p>
+<ul>
+<li>Search performance is measurable.</li>
+<li>The signals are already there.</li>
+<li>Where’s the operational follow-through?</li>
+</ul>
+<p>Your onlineshop is only as good as search bar. If yours isn’t converting, don’t blame traffic.</p>
+]]></content></item><item><title>100days.ink — A Commitment Engine</title><link>https://neilspink.ch/posts/2025-09-07-100days/</link><pubDate>Sun, 07 Sep 2025 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2025-09-07-100days/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<p>I’ve been building <a href="https://100days.ink">100days.ink</a>, a small app with a big purpose:
 help people commit to something for 100 days and actually follow through.</p>
 <p>The rules are simple:</p>
 <ul>
@@ -203,16 +214,4 @@ I wrote one for <strong>Minecraft hosting</strong>:</p>
 <li>Client (Ember.js): <a href="https://github.com/neilspink/speed-comparison-client">speed-comparison-client</a></li>
 <li>Server: <a href="https://github.com/neilspink/speed-comparison-server">speed-comparison-server</a></li>
 </ul>
-]]></content></item><item><title>Why Your Online Shop Isn’t Selling (And What I’d Do If I Were CEO)</title><link>https://neilspink.ch/posts/2026-01-18-onlineshop-search-results/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://neilspink.ch/posts/2026-01-18-onlineshop-search-results/</guid><description>&amp;lt;no value&amp;gt;</description><content type="text/html" mode="escaped"><![CDATA[<p>Recently, I went looking for a USB-C monitor. I typed exactly that into the onlineshop of the nearest electronics store getting nothing relevant back. Confused, I ran the same search on four more major Swiss retailers. One showed only cables. Two didn’t list any monitors. One buried the relevant products under five unrelated results. Only one got it right.</p>
-<p>Maybe “Bildschirm” was the better term? Tried that. No improvement.</p>
-<img src="search-results.png" alt="Example products returned" width="2275" />
-<p>Your search engine is your sales team. If it can’t understand intent, it can’t convert. And if your customer has to work to find what they need, they’re gone.</p>
-<p>Most retailers already sit on gold: behavioral data, product metadata, competitor benchmarks. But few close the loop. If I were CEO, I’d do three things immediately:</p>
-<ul>
-<li>Enable in-search feedback (“Didn’t find what you wanted?”)</li>
-<li>Tie it to a reward mechanism—turn friction into loyalty</li>
-<li>Run monthly and seasonal audits of top search terms vs conversion</li>
-<li>Benchmark competitors’ search accuracy quarterly</li>
-</ul>
-<p>Your onlineshop is only as good as search bar. If yours isn’t converting, don’t blame traffic.</p>
 ]]></content></item></channel></rss>
